@@ -1,0 +1,31 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --void: #0A0A0F;
+  --stellar-blue: #185FA5;
+  --frost: #F5F5F7;
+  --carbon: #2C2C2A;
+  --signal-green: #1D9E75;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--frost);
+  color: var(--void);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+}
