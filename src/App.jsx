@@ -49,19 +49,40 @@ function Nav() {
 /* ─── HERO ────────────────────────────────────────────── */
 function Hero() {
   return (
-    <section style={{ padding: '112px 48px 96px', maxWidth: '960px', margin: '0 auto' }}>
-      <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.18em', color: '#0A4A35', marginBottom: '28px', textTransform: 'uppercase' }}>
-        QUALITY ASSURANCE · ADA COMPLIANT · PERFORMANCE TESTED
-      </p>
-      <h1 style={{ fontWeight: 700, fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1.08, color: C.void, marginBottom: '28px', letterSpacing: '-0.025em' }}>
-        Products built to work.<br />For everyone.<br />Every time.
-      </h1>
-      <p style={{ fontSize: '17px', color: C.muted, maxWidth: '520px', marginBottom: '44px', lineHeight: 1.75 }}>
-        Aurviq is the QA agency embedded in your team. We catch what others miss — before a single user encounters it.
-      </p>
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        <a href="#contact" style={{ background: C.blue, color: C.white, padding: '13px 30px', fontWeight: 700, fontSize: '14px', letterSpacing: '0.05em', textDecoration: 'none', display: 'inline-block' }}>SHIP WITH CERTAINTY.</a>
-        <a href="#services" style={{ border: `1px solid ${C.border}`, color: C.carbon, padding: '13px 30px', fontSize: '14px', textDecoration: 'none', display: 'inline-block' }}>See how it works</a>
+    <section className="hero-section" style={{ minHeight: '560px' }}>
+      {/* Ambient gradient orbs */}
+      <div className="hero-orb hero-orb-1" />
+      <div className="hero-orb hero-orb-2" />
+      <div className="hero-orb hero-orb-3" />
+
+      {/* Technical grid */}
+      <div className="hero-grid" />
+
+      {/* Sweeping shimmer */}
+      <div className="hero-shimmer" />
+
+      {/* Bottom fade into page */}
+      <div className="hero-fade" />
+
+      {/* Content */}
+      <div className="hero-content" style={{ padding: '112px 48px 96px', maxWidth: '960px', margin: '0 auto' }}>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.18em', color: C.green, marginBottom: '28px', textTransform: 'uppercase', opacity: 0.85 }}>
+          QUALITY ASSURANCE · ADA COMPLIANT · PERFORMANCE TESTED
+        </p>
+        <h1 style={{ fontWeight: 700, fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1.08, color: C.frost, marginBottom: '28px', letterSpacing: '-0.025em' }}>
+          Products built to work.<br />For everyone.<br />Every time.
+        </h1>
+        <p style={{ fontSize: '17px', color: C.frost, opacity: 0.6, maxWidth: '520px', marginBottom: '44px', lineHeight: 1.75 }}>
+          Aurviq is the QA agency embedded in your team. We catch what others miss — before a single user encounters it.
+        </p>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <a href="#contact" style={{ background: C.blue, color: C.white, padding: '13px 30px', fontWeight: 700, fontSize: '14px', letterSpacing: '0.05em', textDecoration: 'none', display: 'inline-block' }}>
+            SHIP WITH CERTAINTY.
+          </a>
+          <a href="#services" style={{ border: `1px solid rgba(245,245,247,0.2)`, color: C.frost, padding: '13px 30px', fontSize: '14px', textDecoration: 'none', display: 'inline-block', opacity: 0.8 }}>
+            See how it works
+          </a>
+        </div>
       </div>
     </section>
   );

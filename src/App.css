@@ -79,3 +79,158 @@
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
+
+/* ═══════════════════════════════════════════════════════
+   HERO GRADIENT MESH — Stripe-style ambient animation
+   ═══════════════════════════════════════════════════════ */
+
+/* Orb 1 — Stellar Blue, aggressive wide sweep */
+@keyframes orb1 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  20%  { transform: translate(200px, 60px) scale(1.25); }
+  40%  { transform: translate(140px, 200px) scale(0.85); }
+  60%  { transform: translate(-80px, 160px) scale(1.2); }
+  80%  { transform: translate(-120px, 40px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+/* Orb 2 — Signal Green, fast counter-diagonal */
+@keyframes orb2 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  20%  { transform: translate(-160px, -100px) scale(1.3); }
+  40%  { transform: translate(-80px, -200px) scale(0.8); }
+  60%  { transform: translate(120px, -140px) scale(1.2); }
+  80%  { transform: translate(100px, -40px) scale(0.95); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+/* Orb 3 — blend, erratic cross-sweep */
+@keyframes orb3 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  25%  { transform: translate(-200px, -100px) scale(1.35); }
+  50%  { transform: translate(60px, -180px) scale(0.75); }
+  75%  { transform: translate(180px, 60px) scale(1.2); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+/* Sweeping shimmer — faster, two passes */
+@keyframes shimmer {
+  0%   { transform: translateX(-100%) skewX(-12deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(250%) skewX(-12deg); opacity: 0; }
+}
+
+/* Grid line pulse — more contrast */
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.04; }
+  50%       { opacity: 0.12; }
+}
+
+/* Hero content fade-in on load */
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero wrapper ────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: #0A0A0F;
+}
+
+/* ── Sweeping shimmer line ───────────────────────────── */
+.hero-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(24,95,165,0.06) 40%,
+    rgba(29,158,117,0.04) 60%,
+    transparent 100%
+  );
+  animation: shimmer 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Gradient mesh orbs ──────────────────────────────── */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-orb-1 {
+  width: 480px;
+  height: 480px;
+  top: -140px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(24,95,165,0.4) 0%, rgba(24,95,165,0) 70%);
+  animation: orb1 5s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+  width: 380px;
+  height: 380px;
+  top: 20px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(29,158,117,0.28) 0%, rgba(29,158,117,0) 70%);
+  animation: orb2 6s ease-in-out infinite;
+}
+
+.hero-orb-3 {
+  width: 340px;
+  height: 340px;
+  bottom: -80px;
+  left: 38%;
+  background: radial-gradient(circle, rgba(24,95,165,0.22) 0%, rgba(29,158,117,0.14) 50%, rgba(0,0,0,0) 70%);
+  animation: orb3 7s ease-in-out infinite;
+}
+
+/* Grid uses logo blue #185FA5 */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(24,95,165,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24,95,165,1) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+/* ── Technical grid overlay — defined below with orbs ── */
+
+/* ── Bottom fade so grid/orbs don't bleed out ────────── */
+.hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #F5F5F7);
+  pointer-events: none;
+}
+
+/* ── Hero content sits above everything ──────────────── */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  animation: heroReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
