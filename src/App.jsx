@@ -6,7 +6,8 @@ const C = {
   blue: '#0D3D6E',
   frost: '#F5F5F7',
   carbon: '#2C2C2A',
-  green: '#126B50',
+  green: '#126B50',      // backgrounds with white text
+  greenText: '#1D9E75',  // text on dark backgrounds
   white: '#FFFFFF',
   border: '#E0E0E2',
   muted: '#6B6B6E',
@@ -66,7 +67,7 @@ function Hero() {
 
       {/* Content */}
       <div className="hero-content" style={{ padding: '112px 48px 96px', maxWidth: '960px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.18em', color: C.green, marginBottom: '28px', textTransform: 'uppercase', opacity: 0.85 }}>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.18em', color: C.greenText, marginBottom: '28px', textTransform: 'uppercase', opacity: 0.85 }}>
           QUALITY ASSURANCE · ADA COMPLIANT · PERFORMANCE TESTED
         </p>
         <h1 style={{ fontWeight: 700, fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1.08, color: C.frost, marginBottom: '28px', letterSpacing: '-0.025em' }}>
@@ -152,9 +153,14 @@ function PipelineDiagram() {
   ];
 
   return (
-    <div style={{ background: C.void, padding: '64px 48px' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.green, textTransform: 'uppercase', marginBottom: '40px', textAlign: 'center' }}>
+    <div className="hero-section" style={{ padding: '64px 48px' }}>
+      <div className="hero-orb hero-orb-1" />
+      <div className="hero-orb hero-orb-2" />
+      <div className="hero-orb hero-orb-3" />
+      <div className="hero-grid" />
+      <div className="hero-shimmer" />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '1100px', margin: '0 auto' }}>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.greenText, textTransform: 'uppercase', marginBottom: '40px', textAlign: 'center' }}>
           THE TESTING PIPELINE
         </p>
 
@@ -169,7 +175,7 @@ function PipelineDiagram() {
                     <span style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.frost, fontWeight: 700 }}>{s.id}</span>
                   </div>
                   <div>
-                    <p style={{ fontFamily: 'Courier New, monospace', fontSize: '9px', letterSpacing: '0.14em', color: C.green, textTransform: 'uppercase', marginBottom: '2px' }}>{s.sub}</p>
+                    <p style={{ fontFamily: 'Courier New, monospace', fontSize: '9px', letterSpacing: '0.14em', color: C.greenText, textTransform: 'uppercase', marginBottom: '2px' }}>{s.sub}</p>
                     <p style={{ fontWeight: 700, fontSize: '18px', color: C.frost, lineHeight: 1 }}>{s.name}</p>
                   </div>
                 </div>
@@ -178,8 +184,8 @@ function PipelineDiagram() {
                     <div key={j} className={`fade-in${visible ? ' visible' : ''}`}
                       style={{ display: 'flex', alignItems: 'center', gap: '10px', animationDelay: `${i * 0.18 + j * 0.07 + 0.3}s` }}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
-                        <rect width="12" height="12" fill={C.green} opacity="0.15" />
-                        <path d="M2.5 6l2.5 2.5 4.5-5" stroke={C.green} strokeWidth="1.5" strokeLinecap="square" />
+                        <rect width="12" height="12" fill={C.greenText} opacity="0.15" />
+                        <path d="M2.5 6l2.5 2.5 4.5-5" stroke={C.greenText} strokeWidth="1.5" strokeLinecap="square" />
                       </svg>
                       <span style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.frost, opacity: 0.65 }}>{item}</span>
                     </div>
@@ -209,10 +215,10 @@ function PipelineDiagram() {
         {/* Terminal status bar */}
         <div className={`fade-in${visible ? ' visible' : ''}`}
           style={{ marginTop: '32px', background: 'rgba(245,245,247,0.04)', border: `1px solid rgba(245,245,247,0.08)`, padding: '16px 24px', display: 'flex', alignItems: 'center', gap: '24px', animationDelay: '0.8s' }}>
-          <span className="terminal-cursor" style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.green, letterSpacing: '0.1em' }}>▶ PIPELINE STATUS</span>
+          <span className="terminal-cursor" style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.greenText, letterSpacing: '0.1em' }}>▶ PIPELINE STATUS</span>
           {['PLAN COMPLETE', 'TESTS PASSING', 'ADA: OK', 'PERF: OK', 'READY TO SHIP'].map((label, i) => (
             <span key={i} className={`fade-in${visible ? ' visible' : ''}`}
-              style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.frost, opacity: 0.45, letterSpacing: '0.08em', animationDelay: `${0.9 + i * 0.12}s` }}>
+              style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.frost, opacity: 0.6, letterSpacing: '0.08em', animationDelay: `${0.9 + i * 0.12}s` }}>
               {label}{i < 4 && <span style={{ opacity: 0.3, marginLeft: '8px' }}>·</span>}
             </span>
           ))}
@@ -229,14 +235,14 @@ function CostCurve() {
 
   const states = {
     without: [
-      { label: 'Planning',   pct: 2,   color: C.green, cost: '~$0'  },
+      { label: 'Planning',   pct: 2,   color: C.greenText, cost: '~$0'  },
       { label: 'Staging',    pct: 15,  color: '#B8860B', cost: '~15×' },
       { label: 'Production', pct: 100, color: C.red,   cost: '100×' },
     ],
     with: [
-      { label: 'Planning',   pct: 2,  color: C.green, cost: '~$0' },
-      { label: 'Staging',    pct: 2,  color: C.green, cost: '~$0' },
-      { label: 'Production', pct: 2,  color: C.green, cost: '~$0' },
+      { label: 'Planning',   pct: 2,  color: C.greenText, cost: '~$0' },
+      { label: 'Staging',    pct: 2,  color: C.greenText, cost: '~$0' },
+      { label: 'Production', pct: 2,  color: C.greenText, cost: '~$0' },
     ],
   };
 
@@ -248,15 +254,15 @@ function CostCurve() {
 
         {/* Copy */}
         <div className={`fade-up${visible ? ' visible' : ''}`} ref={ref}>
-          <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blue, textTransform: 'uppercase', marginBottom: '20px' }}>THE COST CURVE</p>
+          <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.greenText, textTransform: 'uppercase', marginBottom: '20px' }}>THE COST CURVE</p>
           <h2 style={{ fontWeight: 700, fontSize: 'clamp(22px, 3vw, 34px)', color: C.frost, marginBottom: '20px', lineHeight: 1.25, letterSpacing: '-0.02em' }}>
-            A bug in planning costs <span style={{ color: C.green }}>~$0.</span><br />
+            A bug in planning costs <span style={{ color: C.greenText }}>~$0.</span><br />
             That same bug in production costs you <span style={{ color: C.red }}>your launch.</span>
           </h2>
           <p style={{ color: C.frost, opacity: 0.5, fontSize: '14px', lineHeight: 1.75 }}>
             NIST research puts the fix cost ratio at up to 100× between planning and production. Aurviq's Foundation package exists to eliminate that risk before it's even possible.
           </p>
-          <div style={{ marginTop: '32px', padding: '16px 20px', background: 'rgba(245,245,247,0.04)', borderLeft: `3px solid ${C.green}`, fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.green, letterSpacing: '0.1em', lineHeight: 1.6 }}>
+          <div style={{ marginTop: '32px', padding: '16px 20px', background: 'rgba(245,245,247,0.04)', borderLeft: `3px solid ${C.greenText}`, fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.greenText, letterSpacing: '0.1em', lineHeight: 1.6 }}>
             SOURCE: NIST — "The Economic Impacts of Inadequate Infrastructure for Software Testing"
           </div>
         </div>
@@ -265,7 +271,7 @@ function CostCurve() {
         <div>
           {/* Toggle */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-            <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.frost, opacity: 0.35, textTransform: 'uppercase' }}>
+            <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.frost, opacity: 0.55, textTransform: 'uppercase' }}>
               Relative cost to fix a bug — by stage
             </p>
             <div style={{ display: 'flex', gap: '2px' }}>
@@ -303,7 +309,7 @@ function CostCurve() {
           </div>
 
           {withAurviq && (
-            <p className="fade-in visible" style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.green, marginTop: '16px', letterSpacing: '0.08em', textAlign: 'right' }}>
+            <p className="fade-in visible" style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.greenText, marginTop: '16px', letterSpacing: '0.08em', textAlign: 'right' }}>
               ✓ All bugs caught in planning. Cost: ~$0.
             </p>
           )}
@@ -598,9 +604,15 @@ function VoiceBlock() {
 /* ─── CTA ─────────────────────────────────────────────── */
 function CTA() {
   return (
-    <section id="contact" style={{ padding: '120px 48px', textAlign: 'center', background: C.blue }}>
-      <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.green, textTransform: 'uppercase', marginBottom: '22px' }}>Ready to ship?</p>
+    <section id="contact" className="hero-section" style={{ padding: '120px 48px', textAlign: 'center' }}>
+      <div className="hero-orb hero-orb-1" />
+      <div className="hero-orb hero-orb-2" />
+      <div className="hero-orb hero-orb-3" />
+      <div className="hero-grid" />
+      <div className="hero-shimmer" />
+      <div className="hero-fade" />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '680px', margin: '0 auto' }}>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.frost, opacity: 0.65, textTransform: 'uppercase', marginBottom: '22px' }}>Ready to ship?</p>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(36px, 5.5vw, 64px)', color: C.white, marginBottom: '20px', lineHeight: 1.08, letterSpacing: '-0.025em' }}>Ship with certainty.</h2>
         <p style={{ fontSize: '16px', color: C.white, opacity: 0.75, marginBottom: '44px', lineHeight: 1.75 }}>Free 30-minute pre-launch audit. No pitch. Just proof.</p>
         <a href="mailto:hello@aurviq.com" style={{ background: C.white, color: C.blue, padding: '15px 38px', fontWeight: 700, fontSize: '15px', letterSpacing: '0.04em', display: 'inline-block', textDecoration: 'none' }}>
