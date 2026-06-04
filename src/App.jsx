@@ -55,15 +55,17 @@ function Hero() {
       <div className="hero-orb hero-orb-1" />
       <div className="hero-orb hero-orb-2" />
       <div className="hero-orb hero-orb-3" />
+      <div className="hero-orb hero-orb-5" />
 
       {/* Technical grid */}
       <div className="hero-grid" />
 
+      {/* Chip-edge light catch */}
+      <div className="hero-chip-edge" />
+
       {/* Sweeping shimmer */}
       <div className="hero-shimmer" />
 
-      {/* Bottom fade into page */}
-      <div className="hero-fade" />
 
       {/* Content */}
       <div className="hero-content" style={{ padding: '112px 48px 96px', maxWidth: '960px', margin: '0 auto' }}>
@@ -610,7 +612,6 @@ function CTA() {
       <div className="hero-orb hero-orb-3" />
       <div className="hero-grid" />
       <div className="hero-shimmer" />
-      <div className="hero-fade" />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '680px', margin: '0 auto' }}>
         <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.frost, opacity: 0.65, textTransform: 'uppercase', marginBottom: '22px' }}>Ready to ship?</p>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(36px, 5.5vw, 64px)', color: C.white, marginBottom: '20px', lineHeight: 1.08, letterSpacing: '-0.025em' }}>Ship with certainty.</h2>
@@ -627,10 +628,10 @@ function CTA() {
 function Footer() {
   return (
     <footer style={{ borderTop: `1px solid ${C.border}`, padding: '28px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: C.white }}>
-      <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase' }}>SHIP WITH CERTAINTY. · AURVIQ</p>
+      <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.12em', color: C.void, textTransform: 'uppercase' }}>SHIP WITH CERTAINTY. · AURVIQ</p>
       <div style={{ display: 'flex', gap: '20px' }}>
         {['aurviq.com', 'aurviq.io'].map(d => (
-          <span key={d} style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.muted }}>{d}</span>
+          <span key={d} style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.void }}>{d}</span>
         ))}
       </div>
     </footer>
