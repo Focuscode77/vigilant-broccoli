@@ -307,3 +307,55 @@
   z-index: 2;
   animation: heroReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
+/* ═══════════════════════════════════════════════════════
+   INTERACTIVE ELEMENTS
+   ═══════════════════════════════════════════════════════ */
+
+/* Nav links */
+.nav-link {
+  color: #F5F5F7;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.18s ease;
+  letter-spacing: 0.01em;
+}
+.nav-link:hover { opacity: 1; }
+
+/* Service card lift on hover */
+.service-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.09);
+}
+
+/* Primary / outline button hover */
+.btn-primary {
+  transition: opacity 0.18s ease, transform 0.15s ease;
+}
+.btn-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — mobile-first overrides
+   ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  /* Nav: tighten logo hex on very small screens */
+  .nav-wordmark { font-size: 13px !important; }
+
+  /* Hero orbs are too large on mobile — scale down */
+  .hero-orb-1 { width: 300px !important; height: 300px !important; top: -100px !important; left: -80px !important; }
+  .hero-orb-5 { width: 140px !important; height: 140px !important; }
+  .hero-orb-2 { width: 220px !important; height: 220px !important; }
+  .hero-orb-3 { width: 200px !important; height: 200px !important; }
+
+  /* Pipeline terminal status bar: wrap items */
+  .pipeline-status { flex-wrap: wrap; gap: 10px !important; }
+}
