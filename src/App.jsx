@@ -121,7 +121,7 @@ function Hero() {
             : <>Products built to work.<br />For everyone.<br />Every time.</>}
         </h1>
         <p style={{ fontSize: isMobile ? '15px' : '17px', color: C.frost, opacity: 0.6, maxWidth: isMobile ? '100%' : '520px', marginBottom: '40px', lineHeight: 1.75 }}>
-          Aurviq is the QA agency embedded in your team. We catch what others miss — before a single user encounters it.
+          Aurviq is an AI powered QA agency.
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', maxWidth: '100%' }}>
           <a href="#contact" className="btn-primary" style={{
