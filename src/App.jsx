@@ -144,10 +144,10 @@ function Nav({ onGetStarted, onSignIn }) {
         {/* Right actions */}
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           {!isMobile && (
-            <a href="#" onClick={e => { e.preventDefault(); onSignIn?.(); }} className="nav-outline-btn">Sign in</a>
+            <a href="/login" onClick={e => { e.preventDefault(); onSignIn?.(); }} className="nav-outline-btn">Sign in</a>
           )}
           {!isMobile && (
-            <a href="#" onClick={e => { e.preventDefault(); onGetStarted?.(); }} className="nav-cta-btn">
+            <a href="/getstarted" onClick={e => { e.preventDefault(); onGetStarted?.(); }} className="nav-cta-btn">
               Get started
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" focusable="false">
                 <path d="M2.5 6.5h8M7 2.5l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -191,8 +191,8 @@ function Nav({ onGetStarted, onSignIn }) {
             </a>
           ))}
           <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', margin: '10px 0' }} />
-          <a href="#" onClick={e => { e.preventDefault(); setMenuOpen(false); onSignIn?.(); }} className="nav-outline-btn" style={{ textAlign: 'center' }}>Sign in</a>
-          <a href="#" onClick={e => { e.preventDefault(); setMenuOpen(false); onGetStarted?.(); }} className="nav-cta-btn" style={{ justifyContent: 'center', marginTop: '4px' }}>
+          <a href="/login" onClick={e => { e.preventDefault(); setMenuOpen(false); onSignIn?.(); }} className="nav-outline-btn" style={{ textAlign: 'center' }}>Sign in</a>
+          <a href="/getstarted" onClick={e => { e.preventDefault(); setMenuOpen(false); onGetStarted?.(); }} className="nav-cta-btn" style={{ justifyContent: 'center', marginTop: '4px' }}>
             Get started
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" focusable="false">
               <path d="M2.5 6.5h8M7 2.5l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -1360,17 +1360,32 @@ function LoginPage({ onBack, mode }) {
 }
 
 /* ─── APP ─────────────────────────────────────────────── */
-export default function App() {
-  const [showLogin, setShowLogin] = useState(null);
+const routeFor = (path) =>
+  path === '/login' ? 'signin' : path === '/getstarted' ? 'getstarted' : null;
 
-  if (showLogin) return <LoginPage onBack={() => setShowLogin(null)} mode={showLogin} />;
+export default function App() {
+  const [route, setRoute] = useState(() => routeFor(window.location.pathname));
+
+  // Keep state in sync with browser back/forward.
+  useEffect(() => {
+    const onPop = () => setRoute(routeFor(window.location.pathname));
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const navigate = (path, mode) => {
+    window.history.pushState({}, '', path);
+    setRoute(mode);
+  };
+
+  if (route) return <LoginPage onBack={() => navigate('/', null)} mode={route} />;
 
   return (
     <div style={{ minHeight: '100vh', background: '#000' }}>
       <a href="#main" className="skip-link">Skip to main content</a>
       <Nav
-        onSignIn={() => setShowLogin('signin')}
-        onGetStarted={() => setShowLogin('getstarted')}
+        onSignIn={() => navigate('/login', 'signin')}
+        onGetStarted={() => navigate('/getstarted', 'getstarted')}
       />
       <main id="main">
         <Hero />
