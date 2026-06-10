@@ -45,15 +45,15 @@ function useBreakpoint() {
 /* ─── Glow helpers ────────────────────────────────────── */
 function glowStyle(ratio, color) {
   const r = Math.max(0, Math.min(1, ratio));
-  const s1 = Math.round(20 + r * 60);
-  const s2 = Math.round(40 + r * 120);
+  const s1 = Math.round(18 + r * 42);   // softened ~30% — was 20 + r*60
+  const s2 = Math.round(34 + r * 80);   // was 40 + r*120
   if (color === 'blue') return {
-    boxShadow:   `0 0 ${s1}px rgba(24,95,165,${(0.08 + r * 0.52).toFixed(2)}), 0 0 ${s2}px rgba(24,95,165,${(r * 0.25).toFixed(2)})`,
-    borderColor: `rgba(24,95,165,${(0.15 + r * 0.45).toFixed(2)})`,
+    boxShadow:   `0 0 ${s1}px rgba(24,95,165,${(0.06 + r * 0.34).toFixed(2)}), 0 0 ${s2}px rgba(24,95,165,${(r * 0.16).toFixed(2)})`,
+    borderColor: `rgba(24,95,165,${(0.15 + r * 0.4).toFixed(2)})`,
   };
   return {
-    boxShadow:   `0 0 ${s1}px rgba(29,158,117,${(0.08 + r * 0.42).toFixed(2)}), 0 0 ${s2}px rgba(29,158,117,${(r * 0.2).toFixed(2)})`,
-    borderColor: `rgba(29,158,117,${(0.15 + r * 0.45).toFixed(2)})`,
+    boxShadow:   `0 0 ${s1}px rgba(29,158,117,${(0.06 + r * 0.3).toFixed(2)}), 0 0 ${s2}px rgba(29,158,117,${(r * 0.14).toFixed(2)})`,
+    borderColor: `rgba(29,158,117,${(0.15 + r * 0.4).toFixed(2)})`,
   };
 }
 
@@ -79,6 +79,21 @@ function CheckCircle({ checked, onToggle, size = 22 }) {
         </svg>
       )}
     </div>
+  );
+}
+
+/* ─── Section eyebrow (Inter — mono is reserved for terminal/data) ── */
+function Eyebrow({ children, color = C.blueText, center = false, mb = 16 }) {
+  return (
+    <p style={{
+      fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+      fontSize: '13px', fontWeight: 600, letterSpacing: '0.06em',
+      color, textTransform: 'uppercase',
+      marginBottom: `${mb}px`,
+      textAlign: center ? 'center' : 'left',
+    }}>
+      {children}
+    </p>
   );
 }
 
@@ -233,7 +248,7 @@ function Hero() {
 
         {/* Left — text + CTAs */}
         <div>
-          <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: isMobile ? '0.08em' : '0.16em', color: C.greenText, marginBottom: '24px', textTransform: 'uppercase', opacity: 0.85 }}>
+          <p style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 600, fontSize: '13px', letterSpacing: isMobile ? '0.04em' : '0.06em', color: C.greenText, marginBottom: '24px', textTransform: 'uppercase' }}>
             {isMobile ? 'QA · ADA · PERFORMANCE' : 'QUALITY ASSURANCE · ADA COMPLIANT · PERFORMANCE TESTED'}
           </p>
           <h1 style={{
@@ -249,23 +264,23 @@ function Hero() {
               ? 'Products built to work. For everyone. Every time.'
               : <>Products built to work.<br />For everyone.<br />Every time.</>}
           </h1>
-          <p style={{ fontSize: isMobile ? '15px' : '17px', color: C.frost, opacity: 0.55, marginBottom: '40px', lineHeight: 1.75 }}>
-            Aurviq is an AI powered QA agency.
+          <p style={{ fontSize: isMobile ? '15px' : '17px', color: C.frost, opacity: 0.6, marginBottom: '40px', lineHeight: 1.75, maxWidth: '460px' }}>
+            Aurviq is the AI-powered QA team embedded in your workflow — catching regressions, accessibility gaps, and performance issues before your users ever do.
           </p>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <a href="#contact" className="btn-primary" style={{
               background: C.brandBlue, color: C.white,
               padding: isMobile ? '12px 22px' : '13px 30px',
-              fontWeight: 700, fontSize: '14px', letterSpacing: '0.05em',
-              textDecoration: 'none', display: 'inline-block',
+              fontWeight: 600, fontSize: '15px', letterSpacing: '-0.01em',
+              textDecoration: 'none', display: 'inline-block', borderRadius: '7px',
             }}>
-              SHIP WITH CERTAINTY.
+              Ship with certainty
             </a>
             <a href="#services" style={{
-              border: `1px solid ${C.border}`, color: C.frost,
+              border: `1px solid rgba(255,255,255,0.18)`, color: C.frost,
               padding: isMobile ? '12px 22px' : '13px 30px',
-              fontSize: '14px', textDecoration: 'none', display: 'inline-block',
-              opacity: 0.65, transition: 'opacity 0.18s',
+              fontSize: '15px', fontWeight: 500, textDecoration: 'none', display: 'inline-block',
+              borderRadius: '7px', opacity: 0.8, transition: 'opacity 0.18s',
             }}>
               See how it works
             </a>
@@ -320,33 +335,44 @@ function Hero() {
 function StatsBar() {
   const { isMobile } = useBreakpoint();
   const stats = [
-    { number: '100×', label: 'Bug cost: production vs. planning', accent: C.brandBlue },
-    { number: '~$0',  label: 'Bug cost caught in planning',        accent: C.green },
-    { number: '9',    label: 'Bugs caught before go-live',         accent: C.green },
-    { number: '14',   label: 'ADA violations fixed pre-launch',    accent: C.brandBlue },
+    { number: '100×', label: 'Bug cost: production vs. planning', accent: C.brandBlue, src: 1 },
+    { number: '~$0',  label: 'Bug cost caught in planning',        accent: C.green,     src: 1 },
+    { number: '9',    label: 'Bugs caught before go-live',         accent: C.green,     src: 2 },
+    { number: '14',   label: 'ADA violations fixed pre-launch',    accent: C.brandBlue, src: 2 },
   ];
   return (
-    <div style={{
-      borderTop: `1px solid ${C.border}`,
-      borderBottom: `1px solid ${C.border}`,
-      display: 'grid',
-      gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
-      background: C.surface,
-    }}>
-      {stats.map((s, i) => (
-        <div key={i} style={{
-          padding: isMobile ? '28px 16px' : '40px 24px',
-          borderRight: isMobile
-            ? (i % 2 === 0 ? `1px solid ${C.border}` : 'none')
-            : (i < 3 ? `1px solid ${C.border}` : 'none'),
-          borderBottom: isMobile && i < 2 ? `1px solid ${C.border}` : 'none',
-          borderTop: `2px solid ${s.accent}`,
-          textAlign: 'center',
-        }}>
-          <div style={{ fontWeight: 800, fontSize: isMobile ? '28px' : '38px', color: s.accent, marginBottom: '8px', letterSpacing: '-0.02em' }}>{s.number}</div>
-          <div style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase', lineHeight: 1.4 }}>{s.label}</div>
-        </div>
-      ))}
+    <div style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.surface }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+      }}>
+        {stats.map((s, i) => (
+          <div key={i} style={{
+            padding: isMobile ? '28px 16px' : '40px 24px',
+            borderRight: isMobile
+              ? (i % 2 === 0 ? `1px solid ${C.border}` : 'none')
+              : (i < 3 ? `1px solid ${C.border}` : 'none'),
+            borderBottom: isMobile && i < 2 ? `1px solid ${C.border}` : 'none',
+            borderTop: `2px solid ${s.accent}`,
+            textAlign: 'center',
+          }}>
+            <div style={{ fontWeight: 800, fontSize: isMobile ? '28px' : '38px', color: s.accent, marginBottom: '8px', letterSpacing: '-0.02em' }}>
+              {s.number}<sup style={{ fontSize: '11px', fontWeight: 600, color: C.muted, marginLeft: '2px', top: '-0.8em' }}>{s.src}</sup>
+            </div>
+            <div style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase', lineHeight: 1.4 }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{
+        padding: isMobile ? '14px 20px' : '14px 24px',
+        borderTop: `1px solid ${C.border}`,
+        display: 'flex', flexWrap: 'wrap', gap: isMobile ? '6px 18px' : '24px',
+        justifyContent: 'center',
+        fontSize: '11px', color: C.muted, lineHeight: 1.5,
+      }}>
+        <span><sup>1</sup> NIST software-testing research</span>
+        <span><sup>2</sup> Results from a recent client engagement</span>
+      </div>
     </div>
   );
 }
@@ -414,7 +440,7 @@ function Services() {
   return (
     <section id="services" style={{ padding: isMobile ? '64px 20px' : '96px 48px', background: C.void }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px' }}>Services</p>
+        <Eyebrow>Services</Eyebrow>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '48px', letterSpacing: '-0.025em' }}>Three stages. One standard.</h2>
         <div style={{
           display: 'grid',
@@ -534,9 +560,7 @@ function PipelineDiagram() {
   return (
     <div id="pipeline" className="hero-section" style={{ padding: isMobile ? '48px 20px' : '64px 48px' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.greenText, textTransform: 'uppercase', marginBottom: '40px', textAlign: 'center' }}>
-          THE TESTING PIPELINE
-        </p>
+        <Eyebrow color={C.green} center mb={40}>The testing pipeline</Eyebrow>
 
         {isMobile ? (
           <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -604,12 +628,12 @@ function CostCurve() {
       <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '44px' : '80px', alignItems: 'center' }}>
 
         <div ref={ref}>
-          <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.greenText, textTransform: 'uppercase', marginBottom: '20px' }}>THE COST CURVE</p>
+          <Eyebrow color={C.green} mb={20}>The cost curve</Eyebrow>
           <h2 style={{ fontWeight: 700, fontSize: 'clamp(22px, 3vw, 34px)', color: C.frost, marginBottom: '20px', lineHeight: 1.25, letterSpacing: '-0.02em' }}>
             A bug in planning costs <span style={{ color: C.greenText }}>~$0.</span><br />
             That same bug in production costs you <span style={{ color: C.red }}>your launch.</span>
           </h2>
-          <p style={{ color: C.muted, fontSize: '14px', lineHeight: 1.75 }}>
+          <p style={{ color: C.muted, fontSize: '15px', lineHeight: 1.75 }}>
             NIST research puts the fix cost ratio at up to 100× between planning and production. Aurviq's Foundation package exists to eliminate that risk before it's even possible.
           </p>
           <div style={{ marginTop: '32px', padding: '16px 20px', background: 'rgba(29,158,117,0.06)', borderLeft: `3px solid ${C.greenText}`, fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.greenText, letterSpacing: '0.08em', lineHeight: 1.6 }}>
@@ -622,7 +646,7 @@ function CostCurve() {
           border: `1px solid rgba(29,158,117,0.5)`,
           borderRadius: '12px',
           padding: '28px',
-          boxShadow: '0 0 70px rgba(29,158,117,0.4), 0 0 140px rgba(29,158,117,0.16)',
+          boxShadow: '0 0 48px rgba(29,158,117,0.26), 0 0 96px rgba(29,158,117,0.1)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
             <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase' }}>
@@ -768,7 +792,7 @@ function Proof() {
   return (
     <section id="proof" style={{ padding: isMobile ? '64px 20px' : '96px 48px', background: C.surface }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px' }}>Case Study</p>
+        <Eyebrow>Case Study</Eyebrow>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '10px', letterSpacing: '-0.025em' }}>From invisible to findable.</h2>
         <p style={{ color: C.muted, fontSize: '15px', marginBottom: '44px', maxWidth: '520px', lineHeight: 1.7 }}>
           A medical logistics company came to Aurviq with a product they believed in. Nobody could find it, access it, or load it fast enough to stay.
@@ -777,11 +801,11 @@ function Proof() {
         <div ref={ref} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '24px' : '40px', alignItems: 'start' }}>
           <div>
             <div style={{
-              border: `1px solid rgba(24,95,165,0.45)`,
+              border: `1px solid ${C.border}`,
               borderRadius: '12px',
               overflow: 'hidden',
               background: C.surfaceAlt,
-              boxShadow: '0 0 60px rgba(24,95,165,0.35), 0 0 120px rgba(24,95,165,0.14)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.5)',
             }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                 <div style={{ padding: '14px 20px', background: 'rgba(255,255,255,0.04)', fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase', borderBottom: `1px solid ${C.border}`, borderRight: `1px solid ${C.border}` }}>Before Aurviq</div>
@@ -807,7 +831,7 @@ function Proof() {
             border: `1px solid rgba(29,158,117,0.5)`,
             borderRadius: '12px',
             padding: isMobile ? '24px 20px' : '32px 28px',
-            boxShadow: '0 0 70px rgba(29,158,117,0.4), 0 0 140px rgba(29,158,117,0.16)',
+            boxShadow: '0 0 48px rgba(29,158,117,0.26), 0 0 96px rgba(29,158,117,0.1)',
           }}>
             <PerformanceChart />
           </div>
@@ -854,7 +878,7 @@ function ADAPanel() {
   return (
     <section id="accessibility" style={{ background: C.void, padding: isMobile ? '64px 20px' : '96px 48px' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px' }}>Accessibility</p>
+        <Eyebrow>Accessibility</Eyebrow>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '10px', letterSpacing: '-0.025em' }}>Built for every user.</h2>
         <p style={{ color: C.muted, fontSize: '15px', marginBottom: '48px', maxWidth: '560px', lineHeight: 1.7 }}>
           ADA compliance isn't a checkbox — it's the baseline. Every product Aurviq ships is tested against WCAG standards before a single user touches it.
@@ -891,10 +915,10 @@ function ADAPanel() {
 
           <div ref={wcagRef} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{
-              border: `1px solid rgba(29,158,117,0.5)`,
+              border: `1px solid ${C.border}`,
               borderRadius: '12px',
               overflow: 'hidden',
-              boxShadow: '0 0 60px rgba(29,158,117,0.4), 0 0 120px rgba(29,158,117,0.16)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.5)',
             }}>
               <div style={{ padding: '14px 24px', background: 'rgba(29,158,117,0.08)', borderBottom: `1px solid ${C.border}`, borderTop: `2px solid ${C.green}` }}>
                 <span style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.green, textTransform: 'uppercase' }}>WCAG 2.1 Conformance</span>
@@ -949,13 +973,13 @@ function VoiceBlock() {
   return (
     <section style={{ background: C.surface, padding: isMobile ? '56px 20px' : '80px 48px' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px', textAlign: 'center' }}>Proof, not promises.</p>
+        <Eyebrow center>Proof, not promises.</Eyebrow>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(24px, 3.5vw, 38px)', color: C.frost, marginBottom: '40px', textAlign: 'center', letterSpacing: '-0.025em' }}>We show our work.</h2>
         <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           {!isMobile && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px' }}>
-              <div style={{ padding: '12px 24px', background: 'rgba(255,255,255,0.05)', fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase' }}>Never say</div>
-              <div style={{ padding: '12px 24px', background: C.green, fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.white, fontWeight: 700, textTransform: 'uppercase' }}>Always say</div>
+              <div style={{ padding: '12px 24px', background: 'rgba(255,255,255,0.05)', fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase' }}>Typical agency</div>
+              <div style={{ padding: '12px 24px', background: C.green, fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.white, fontWeight: 700, textTransform: 'uppercase' }}>What you get from Aurviq</div>
             </div>
           )}
           {pairs.map((p, i) => (
@@ -989,16 +1013,16 @@ function CTA() {
   return (
     <section id="contact" className="hero-section" style={{ padding: isMobile ? '80px 24px' : '120px 48px', textAlign: 'center' }}>
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.frost, opacity: 0.55, textTransform: 'uppercase', marginBottom: '20px' }}>Ready to ship?</p>
+        <Eyebrow color="rgba(245,245,247,0.6)" center mb={20}>Ready to ship?</Eyebrow>
         <h2 style={{ fontWeight: 800, fontSize: isMobile ? 'clamp(32px, 9vw, 48px)' : 'clamp(36px, 5.5vw, 64px)', color: C.white, marginBottom: '20px', lineHeight: 1.06, letterSpacing: '-0.03em' }}>Ship with certainty.</h2>
         <p style={{ fontSize: isMobile ? '15px' : '16px', color: C.white, opacity: 0.6, marginBottom: '40px', lineHeight: 1.75 }}>Free 30-minute pre-launch audit. No pitch. Just proof.</p>
         <a href="mailto:hello@aurviq.com" className="btn-primary" style={{
           background: C.white, color: C.brandBlue,
           padding: isMobile ? '13px 28px' : '15px 38px',
-          fontWeight: 700, fontSize: '15px', letterSpacing: '0.04em',
-          display: 'inline-block', textDecoration: 'none',
+          fontWeight: 600, fontSize: '15px', letterSpacing: '-0.01em',
+          display: 'inline-block', textDecoration: 'none', borderRadius: '7px',
         }}>
-          BOOK A FREE AUDIT
+          Book a free audit
         </a>
 
         {/* What happens next — green glow card */}
@@ -1016,7 +1040,7 @@ function CTA() {
               borderRadius: '12px',
               overflow: 'hidden',
               textAlign: 'left',
-              boxShadow: '0 0 80px rgba(29,158,117,0.5), 0 0 160px rgba(29,158,117,0.2)',
+              boxShadow: '0 0 56px rgba(29,158,117,0.32), 0 0 112px rgba(29,158,117,0.12)',
             }}>
               <div style={{ padding: '14px 24px', borderBottom: `1px solid rgba(29,158,117,0.2)`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.green, letterSpacing: '0.12em' }}>AFTER YOU BOOK</span>
@@ -1060,7 +1084,7 @@ function Footer() {
       background: C.void,
       textAlign: isMobile ? 'center' : 'left',
     }}>
-      <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.12em', color: C.muted, textTransform: 'uppercase' }}>SHIP WITH CERTAINTY. · AURVIQ</p>
+      <p style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: '13px', letterSpacing: '0', color: C.muted }}>Ship with certainty. · Aurviq</p>
       <div style={{ display: 'flex', gap: '20px' }}>
         {['aurviq.com', 'aurviq.io'].map(d => (
           <span key={d} style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.muted }}>{d}</span>
@@ -1390,9 +1414,9 @@ export default function App() {
       <main id="main">
         <Hero />
         <StatsBar />
+        <CostCurve />
         <Services />
         <PipelineDiagram />
-        <CostCurve />
         <Proof />
         <ADAPanel />
         <VoiceBlock />
