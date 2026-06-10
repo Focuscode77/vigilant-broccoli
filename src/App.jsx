@@ -261,8 +261,8 @@ function Hero() {
             overflowWrap: 'break-word',
           }}>
             {isMobile
-              ? 'Products built to work. For everyone. Every time.'
-              : <>Products built to work.<br />For everyone.<br />Every time.</>}
+              ? 'Products tested to work. For everyone. Every time.'
+              : <>Products tested to work.<br />For everyone.<br />Every time.</>}
           </h1>
           <p style={{ fontSize: isMobile ? '15px' : '17px', color: C.frost, opacity: 0.6, marginBottom: '40px', lineHeight: 1.75, maxWidth: '460px' }}>
             Aurviq is the AI-powered QA team embedded in your workflow — catching regressions, accessibility gaps, and performance issues before your users ever do.
@@ -560,7 +560,10 @@ function PipelineDiagram() {
   return (
     <div id="pipeline" className="hero-section" style={{ padding: isMobile ? '48px 20px' : '64px 48px' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <Eyebrow color={C.green} center mb={40}>The testing pipeline</Eyebrow>
+        <Eyebrow color={C.green} center mb={12}>The testing pipeline</Eyebrow>
+        <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '40px', textAlign: 'center', letterSpacing: '-0.025em' }}>
+          Three stages, fully automated.
+        </h2>
 
         {isMobile ? (
           <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
