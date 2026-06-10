@@ -7,12 +7,13 @@ const C = {
   surfaceAlt: '#111111',
   blue:       '#185FA5',   // logo blue
   brandBlue:  '#185FA5',
+  blueText:   '#4A95D9',   // WCAG AA: lighter blue for text on dark (6.6:1); #185FA5 is 3.2:1 (fills/borders only)
   frost:      '#F5F5F7',
   green:      '#1D9E75',   // logo green
   greenText:  '#1D9E75',
   white:      '#FFFFFF',
   border:     'rgba(255,255,255,0.08)',
-  muted:      'rgba(245,245,247,0.42)',
+  muted:      'rgba(245,245,247,0.6)',   // WCAG AA: 6.8:1 on black (was 0.42 → 3.7:1, failed)
   red:        '#FF5555',
 };
 
@@ -84,6 +85,7 @@ function CheckCircle({ checked, onToggle, size = 22 }) {
 /* ─── NAV ─────────────────────────────────────────────── */
 function Nav({ onGetStarted, onSignIn }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { isMobile } = useBreakpoint();
 
   useEffect(() => {
@@ -91,6 +93,9 @@ function Nav({ onGetStarted, onSignIn }) {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Close the mobile menu whenever we leave the mobile breakpoint.
+  useEffect(() => { if (!isMobile) setMenuOpen(false); }, [isMobile]);
 
   const links = [
     { label: 'Services',      href: '#services'     },
@@ -100,7 +105,7 @@ function Nav({ onGetStarted, onSignIn }) {
   ];
 
   return (
-    <nav style={{
+    <nav aria-label="Primary" style={{
       position: 'sticky', top: 0, zIndex: 100,
       background: 'rgba(0,0,0,0.92)',
       backdropFilter: 'blur(20px) saturate(180%)',
@@ -117,8 +122,8 @@ function Nav({ onGetStarted, onSignIn }) {
 
         {/* Logo + separator + nav links */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginRight: isMobile ? 0 : '24px' }}>
-            <svg width="32" height="28" viewBox="118 38 164 144" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <a href="/" aria-label="Aurviq — home" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginRight: isMobile ? 0 : '24px' }}>
+            <svg width="32" height="28" viewBox="118 38 164 144" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
               <path d="M 278.0,110.0 L 239.0,177.5 L 161.0,177.5 L 122.0,110.0 L 161.0,42.5 L 239.0,42.5 Z" fill="#185FA5"/>
               <path d="M 269.0,110.0 L 234.5,170.0 L 165.5,170.0 L 131.0,110.0 L 165.5,50.0 L 234.5,50.0 Z" fill="none" stroke="#F5F5F7" strokeWidth="1.2" opacity="0.25"/>
               <text x="200" y="152" textAnchor="middle" fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif" fontWeight="800" fontSize="84" fill="#F5F5F7">A</text>
@@ -141,15 +146,60 @@ function Nav({ onGetStarted, onSignIn }) {
           {!isMobile && (
             <a href="#" onClick={e => { e.preventDefault(); onSignIn?.(); }} className="nav-outline-btn">Sign in</a>
           )}
-          <a href="#" onClick={e => { e.preventDefault(); onGetStarted?.(); }} className="nav-cta-btn">
+          {!isMobile && (
+            <a href="#" onClick={e => { e.preventDefault(); onGetStarted?.(); }} className="nav-cta-btn">
+              Get started
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" focusable="false">
+                <path d="M2.5 6.5h8M7 2.5l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          )}
+
+          {/* Mobile hamburger */}
+          {isMobile && (
+            <button
+              type="button"
+              className="nav-burger"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMenuOpen(o => !o)}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true" focusable="false">
+                {menuOpen
+                  ? <><path d="M6 6l12 12M18 6L6 18" /></>
+                  : <><path d="M3 7h18M3 12h18M3 17h18" /></>}
+              </svg>
+            </button>
+          )}
+        </div>
+
+      </div>
+
+      {/* Mobile dropdown menu */}
+      {isMobile && menuOpen && (
+        <div id="mobile-menu" style={{
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          padding: '12px 20px 20px',
+          display: 'flex', flexDirection: 'column', gap: '4px',
+          background: 'rgba(0,0,0,0.96)',
+        }}>
+          {links.map(l => (
+            <a key={l.label} href={l.href} className="nav-pill nav-pill-mobile"
+               onClick={() => setMenuOpen(false)}>
+              {l.label}
+            </a>
+          ))}
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', margin: '10px 0' }} />
+          <a href="#" onClick={e => { e.preventDefault(); setMenuOpen(false); onSignIn?.(); }} className="nav-outline-btn" style={{ textAlign: 'center' }}>Sign in</a>
+          <a href="#" onClick={e => { e.preventDefault(); setMenuOpen(false); onGetStarted?.(); }} className="nav-cta-btn" style={{ justifyContent: 'center', marginTop: '4px' }}>
             Get started
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" focusable="false">
               <path d="M2.5 6.5h8M7 2.5l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
         </div>
-
-      </div>
+      )}
     </nav>
   );
 }
@@ -364,7 +414,7 @@ function Services() {
   return (
     <section id="services" style={{ padding: isMobile ? '64px 20px' : '96px 48px', background: C.void }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.brandBlue, textTransform: 'uppercase', marginBottom: '12px' }}>Services</p>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px' }}>Services</p>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '48px', letterSpacing: '-0.025em' }}>Three stages. One standard.</h2>
         <div style={{
           display: 'grid',
@@ -381,7 +431,7 @@ function Services() {
                 display: 'flex', flexDirection: 'column', gap: '14px',
                 borderTop: `2px solid ${pkg.accent}`,
               }}>
-              <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.14em', color: pkg.accent, textTransform: 'uppercase' }}>{pkg.stage}</p>
+              <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.14em', color: pkg.accent === C.brandBlue ? C.blueText : pkg.accent, textTransform: 'uppercase' }}>{pkg.stage}</p>
               <h3 style={{ fontWeight: 700, fontSize: '28px', color: C.frost, lineHeight: 1.1 }}>{pkg.name}</h3>
               <div style={{ width: '36px', height: '2px', background: pkg.accent }} />
               <p style={{ fontWeight: 600, color: C.frost, fontSize: '14px', lineHeight: 1.55 }}>{pkg.tagline}</p>
@@ -421,7 +471,7 @@ function BuildLogCard({ isMobile }) {
       transition: 'box-shadow 0.35s ease, border-color 0.35s ease',
     }}>
       <div style={{ padding: '12px 20px', borderBottom: `1px solid rgba(24,95,165,0.2)`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.brandBlue, letterSpacing: '0.1em' }}>▶ BUILD #4821 — main</span>
+        <span style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', color: C.blueText, letterSpacing: '0.1em' }}>▶ BUILD #4821 — main</span>
         <span style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.muted }}>11m 47s total</span>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(5, 1fr)' }}>
@@ -608,8 +658,8 @@ function CostCurve() {
           </div>
 
           <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: 'Courier New, monospace', fontSize: '9px', color: C.muted, opacity: 0.5, letterSpacing: '0.08em' }}>LOW COST</span>
-            <span style={{ fontFamily: 'Courier New, monospace', fontSize: '9px', color: C.muted, opacity: 0.5, letterSpacing: '0.08em' }}>HIGH COST</span>
+            <span style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.muted, letterSpacing: '0.08em' }}>LOW COST</span>
+            <span style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', color: C.muted, letterSpacing: '0.08em' }}>HIGH COST</span>
           </div>
 
           {withAurviq && (
@@ -641,7 +691,7 @@ function PerformanceChart() {
   return (
     <div ref={ref} style={{ marginTop: '40px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '10px' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.brandBlue, textTransform: 'uppercase' }}>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.blueText, textTransform: 'uppercase' }}>
           Performance Scores
         </p>
         <div style={{ display: 'flex', gap: '2px' }}>
@@ -718,7 +768,7 @@ function Proof() {
   return (
     <section id="proof" style={{ padding: isMobile ? '64px 20px' : '96px 48px', background: C.surface }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.brandBlue, textTransform: 'uppercase', marginBottom: '12px' }}>Case Study</p>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px' }}>Case Study</p>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '10px', letterSpacing: '-0.025em' }}>From invisible to findable.</h2>
         <p style={{ color: C.muted, fontSize: '15px', marginBottom: '44px', maxWidth: '520px', lineHeight: 1.7 }}>
           A medical logistics company came to Aurviq with a product they believed in. Nobody could find it, access it, or load it fast enough to stay.
@@ -804,7 +854,7 @@ function ADAPanel() {
   return (
     <section id="accessibility" style={{ background: C.void, padding: isMobile ? '64px 20px' : '96px 48px' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.brandBlue, textTransform: 'uppercase', marginBottom: '12px' }}>Accessibility</p>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px' }}>Accessibility</p>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px, 4vw, 44px)', color: C.frost, marginBottom: '10px', letterSpacing: '-0.025em' }}>Built for every user.</h2>
         <p style={{ color: C.muted, fontSize: '15px', marginBottom: '48px', maxWidth: '560px', lineHeight: 1.7 }}>
           ADA compliance isn't a checkbox — it's the baseline. Every product Aurviq ships is tested against WCAG standards before a single user touches it.
@@ -820,7 +870,7 @@ function ADAPanel() {
             transition: 'box-shadow 0.35s ease, border-color 0.35s ease',
           }}>
             <div style={{ padding: '14px 24px', background: 'rgba(24,95,165,0.08)', borderBottom: `1px solid ${C.border}`, borderTop: `2px solid ${C.brandBlue}` }}>
-              <span style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.brandBlue, textTransform: 'uppercase' }}>ADA Compliance Checklist</span>
+              <span style={{ fontFamily: 'Courier New, monospace', fontSize: '10px', letterSpacing: '0.12em', color: C.blueText, textTransform: 'uppercase' }}>ADA Compliance Checklist</span>
             </div>
             {checks.map((c, i) => (
               <div key={i}
@@ -899,7 +949,7 @@ function VoiceBlock() {
   return (
     <section style={{ background: C.surface, padding: isMobile ? '56px 20px' : '80px 48px' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.brandBlue, textTransform: 'uppercase', marginBottom: '12px', textAlign: 'center' }}>Proof, not promises.</p>
+        <p style={{ fontFamily: 'Courier New, monospace', fontSize: '11px', letterSpacing: '0.15em', color: C.blueText, textTransform: 'uppercase', marginBottom: '12px', textAlign: 'center' }}>Proof, not promises.</p>
         <h2 style={{ fontWeight: 700, fontSize: 'clamp(24px, 3.5vw, 38px)', color: C.frost, marginBottom: '40px', textAlign: 'center', letterSpacing: '-0.025em' }}>We show our work.</h2>
         <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           {!isMobile && (
@@ -1208,8 +1258,8 @@ function LoginPage({ onBack, mode }) {
           </h1>
           <p style={{ fontSize: '15px', color: 'rgba(245,245,247,0.45)', marginBottom: '32px', lineHeight: 1.65 }}>
             {mode === 'getstarted'
-              ? <><a href="#" style={{ color: C.blue, textDecoration: 'underline', textUnderlineOffset: '2px' }}>Create an account</a>{' '}or log in to get started with Aurviq.</>
-              : <>Log in to your Aurviq account or{' '}<a href="#" style={{ color: C.blue, textDecoration: 'underline', textUnderlineOffset: '2px' }}>create one for free</a>.</>
+              ? <><a href="#" style={{ color: C.blueText, textDecoration: 'underline', textUnderlineOffset: '2px' }}>Create an account</a>{' '}or log in to get started with Aurviq.</>
+              : <>Log in to your Aurviq account or{' '}<a href="#" style={{ color: C.blueText, textDecoration: 'underline', textUnderlineOffset: '2px' }}>create one for free</a>.</>
             }
           </p>
 
@@ -1317,19 +1367,22 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#000' }}>
+      <a href="#main" className="skip-link">Skip to main content</a>
       <Nav
         onSignIn={() => setShowLogin('signin')}
         onGetStarted={() => setShowLogin('getstarted')}
       />
-      <Hero />
-      <StatsBar />
-      <Services />
-      <PipelineDiagram />
-      <CostCurve />
-      <Proof />
-      <ADAPanel />
-      <VoiceBlock />
-      <CTA />
+      <main id="main">
+        <Hero />
+        <StatsBar />
+        <Services />
+        <PipelineDiagram />
+        <CostCurve />
+        <Proof />
+        <ADAPanel />
+        <VoiceBlock />
+        <CTA />
+      </main>
       <Footer />
     </div>
   );
