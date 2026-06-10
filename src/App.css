@@ -228,6 +228,15 @@
 }
 .nav-cta-btn:hover { opacity: 0.85; }
 
+/* ── Login page mosaic tiles ─────────────────────────── */
+.login-tile {
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+.login-tile:hover {
+  filter: brightness(1.18);
+}
+
 .service-card {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
