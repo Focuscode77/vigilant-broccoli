@@ -1099,7 +1099,8 @@ function Footer() {
 
 /* ─── LOGIN PAGE ──────────────────────────────────────── */
 function LoginPage({ onBack, mode }) {
-  const { isMobile } = useBreakpoint();
+  const { isMobile, isTablet } = useBreakpoint();
+  const showArt = !isTablet; // mosaic shows on desktop only (hidden on mobile + tablet)
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw]     = useState(false);
@@ -1168,10 +1169,15 @@ function LoginPage({ onBack, mode }) {
   };
 
   return (
-    <div style={{ height: '100vh', display: 'flex', background: '#000', overflow: 'hidden' }}>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      background: '#000',
+      overflow: showArt ? 'hidden' : 'visible',
+    }}>
 
-      {/* ── LEFT: mosaic panel ──────────────────────── */}
-      {!isMobile && (
+      {/* ── Mosaic panel — desktop only (hidden on mobile + tablet) ── */}
+      {showArt && (
         <div style={{
           width: '55%', height: '100vh', flexShrink: 0,
           display: 'grid',
@@ -1223,31 +1229,33 @@ function LoginPage({ onBack, mode }) {
               'radial-gradient(ellipse at 50% 45%, transparent 42%, rgba(0,0,0,0.45) 100%)',
           }} />
 
-          {/* Editorial anchor */}
-          <div style={{
-            position: 'absolute', bottom: '32px', left: '32px', right: '32px', zIndex: 10,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '14px' }}>
-              <svg width="22" height="19" viewBox="118 38 164 144" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 278.0,110.0 L 239.0,177.5 L 161.0,177.5 L 122.0,110.0 L 161.0,42.5 L 239.0,42.5 Z" fill="#185FA5"/>
-                <path d="M 269.0,110.0 L 234.5,170.0 L 165.5,170.0 L 131.0,110.0 L 165.5,50.0 L 234.5,50.0 Z" fill="none" stroke="#F5F5F7" strokeWidth="1.2" opacity="0.25"/>
-                <text x="200" y="152" textAnchor="middle" fontFamily="'Helvetica Neue',Helvetica,Arial,sans-serif" fontWeight="800" fontSize="84" fill="#F5F5F7">A</text>
-              </svg>
-              <span style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 600, fontSize: '15px', letterSpacing: '-0.01em', color: C.frost }}>Aurviq</span>
+          {/* Editorial anchor (desktop only — on mobile the form's logo carries the brand) */}
+          {!isMobile && (
+            <div style={{ position: 'absolute', zIndex: 10, bottom: '32px', left: '32px', right: '32px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '14px' }}>
+                <svg width="22" height="19" viewBox="118 38 164 144" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 278.0,110.0 L 239.0,177.5 L 161.0,177.5 L 122.0,110.0 L 161.0,42.5 L 239.0,42.5 Z" fill="#185FA5"/>
+                  <path d="M 269.0,110.0 L 234.5,170.0 L 165.5,170.0 L 131.0,110.0 L 165.5,50.0 L 234.5,50.0 Z" fill="none" stroke="#F5F5F7" strokeWidth="1.2" opacity="0.25"/>
+                  <text x="200" y="152" textAnchor="middle" fontFamily="'Helvetica Neue',Helvetica,Arial,sans-serif" fontWeight="800" fontSize="84" fill="#F5F5F7">A</text>
+                </svg>
+                <span style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 600, fontSize: '15px', letterSpacing: '-0.01em', color: C.frost }}>Aurviq</span>
+              </div>
+              <p style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 600, fontSize: '20px', lineHeight: 1.35, letterSpacing: '-0.02em', color: C.frost, maxWidth: '340px' }}>
+                Products built to work.<br />For everyone. Every time.
+              </p>
             </div>
-            <p style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 600, fontSize: '20px', lineHeight: 1.35, letterSpacing: '-0.02em', color: C.frost, maxWidth: '340px' }}>
-              Products built to work.<br />For everyone. Every time.
-            </p>
-          </div>
+          )}
         </div>
       )}
 
-      {/* ── RIGHT: form panel ───────────────────────── */}
+      {/* ── Form panel ───────────────────────────────── */}
       <div style={{
-        flex: 1, height: '100vh', overflowY: 'auto',
+        flex: 1,
+        height: showArt ? '100vh' : 'auto',
+        overflowY: showArt ? 'auto' : 'visible',
         background: '#050505',
         display: 'flex', flexDirection: 'column',
-        padding: isMobile ? '32px 24px' : '40px 56px',
+        padding: isMobile ? '24px 24px 32px' : '40px 56px',
       }}>
         {/* Back link */}
         <div>
@@ -1268,10 +1276,11 @@ function LoginPage({ onBack, mode }) {
         {/* Form — vertically centered */}
         <div style={{
           flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          maxWidth: '380px', width: '100%', margin: '0 auto', padding: '40px 0',
+          maxWidth: '380px', width: '100%', margin: '0 auto',
+          padding: isMobile ? '22px 0' : '40px 0',
         }}>
           {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '44px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: isMobile ? 28 : 44 }}>
             <svg width="28" height="24" viewBox="118 38 164 144" xmlns="http://www.w3.org/2000/svg">
               <path d="M 278.0,110.0 L 239.0,177.5 L 161.0,177.5 L 122.0,110.0 L 161.0,42.5 L 239.0,42.5 Z" fill="#185FA5"/>
               <path d="M 269.0,110.0 L 234.5,170.0 L 165.5,170.0 L 131.0,110.0 L 165.5,50.0 L 234.5,50.0 Z" fill="none" stroke="#F5F5F7" strokeWidth="1.2" opacity="0.25"/>
